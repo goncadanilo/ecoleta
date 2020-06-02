@@ -11,4 +11,5 @@ module.exports = {
   migrations: {
     directory: resolve(__dirname, 'src', 'database', 'migrations'),
   },
+  useNullAsDefault: true,
 };
