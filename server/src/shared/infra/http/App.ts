@@ -2,8 +2,8 @@ import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import { resolve } from 'path';
 
+import AppError from '@shared/errors/AppError';
 import routes from './routes';
-import AppError from '../../errors/AppError';
 
 class App {
   public app: express.Application;
