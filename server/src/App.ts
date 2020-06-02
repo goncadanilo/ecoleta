@@ -1,5 +1,6 @@
 import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
+import { resolve } from 'path';
 
 import routes from './routes';
 import AppError from './errors/AppError';
@@ -22,6 +23,7 @@ class App {
 
   private routes(): void {
     this.app.use('/v1', routes);
+    this.app.use('/files', express.static(resolve(__dirname, '..', 'uploads')));
   }
 
   private handleErrors(): void {
