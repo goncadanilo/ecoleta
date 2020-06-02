@@ -2,17 +2,18 @@ import { resolve } from 'path';
 
 const { NODE_ENV } = process.env;
 const database = NODE_ENV === 'test' ? 'test.sqlite' : 'database.sqlite';
+const path = resolve(__dirname, 'src', 'shared', 'infra', 'database');
 
 module.exports = {
   client: 'sqlite3',
   connection: {
-    filename: resolve(__dirname, 'src', 'database', database),
+    filename: resolve(path, database),
   },
   migrations: {
-    directory: resolve(__dirname, 'src', 'database', 'migrations'),
+    directory: resolve(path, 'migrations'),
   },
   seeds: {
-    directory: resolve(__dirname, 'src', 'database', 'seeds'),
+    directory: resolve(path, 'seeds'),
   },
   useNullAsDefault: true,
 };

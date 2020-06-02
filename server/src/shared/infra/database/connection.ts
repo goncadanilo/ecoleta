@@ -7,7 +7,14 @@ const database = NODE_ENV === 'test' ? 'test.sqlite' : 'database.sqlite';
 const connection = knex({
   client: 'sqlite3',
   connection: {
-    filename: resolve(__dirname, 'src', 'database', database),
+    filename: resolve(
+      __dirname,
+      'src',
+      'shared',
+      'infra',
+      'database',
+      database,
+    ),
   },
   useNullAsDefault: true,
 });
