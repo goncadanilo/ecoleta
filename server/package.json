@@ -6,7 +6,8 @@
   "scripts": {
     "test": "jest --passWithNoTests --silent --noStackTrace",
     "test:staged": "yarn test --findRelatedTests",
-    "test:cov": "yarn test --coverage"
+    "test:cov": "yarn test --coverage",
+    "migrate:run": "knex migrate:latest --knexfile knexfile.ts migrate:latest"
   },
   "dependencies": {
     "cors": "^2.8.5",
