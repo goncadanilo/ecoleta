@@ -3,7 +3,7 @@ import cors from 'cors';
 import { resolve } from 'path';
 
 import routes from './routes';
-import AppError from './errors/AppError';
+import AppError from '../../errors/AppError';
 
 class App {
   public app: express.Application;
