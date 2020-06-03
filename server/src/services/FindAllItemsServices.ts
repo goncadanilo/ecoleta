@@ -1,4 +1,4 @@
-import knex from '../database/connection';
+import ItemsRepository from '../repositories/ItemsRepository';
 
 interface Items {
   id: number;
@@ -7,8 +7,10 @@ interface Items {
 }
 
 class FindAllItemsServices {
+  constructor(private readonly itemsRepository: ItemsRepository) {}
+
   public async execute(): Promise<Items[]> {
-    const items = await knex('items').select('*');
+    const items = await this.itemsRepository.getAllItems();
     const serealizedItems = items.map(item => {
       return {
         id: item.id,
