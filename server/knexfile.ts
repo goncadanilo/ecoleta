@@ -2,7 +2,7 @@ import { resolve } from 'path';
 
 const { NODE_ENV } = process.env;
 const database = NODE_ENV === 'test' ? 'test.sqlite' : 'database.sqlite';
-const path = resolve(__dirname, 'src', 'shared', 'infra', 'database');
+const path = resolve(__dirname, 'src', 'database');
 
 module.exports = {
   client: 'sqlite3',
