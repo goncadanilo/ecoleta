@@ -4,6 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
+    "start:dev": "ts-node-dev --transpileOnly --ignore-watch node_modules src/server.ts",
     "test": "jest --passWithNoTests --silent --noStackTrace",
     "test:staged": "yarn test --findRelatedTests",
     "test:cov": "yarn test --coverage",
