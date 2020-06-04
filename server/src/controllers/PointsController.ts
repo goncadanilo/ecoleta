@@ -1,49 +1,18 @@
 import { Request, Response } from 'express';
 
-import knex from '../database/connection';
+import CreatePointService from '../services/CreatePointService';
 
 class PointsController {
   public async create(request: Request, response: Response): Promise<Response> {
-    const {
-      image,
-      name,
-      email,
-      whatsapp,
-      latitude,
-      longitude,
-      city,
-      uf,
-      items,
-    } = request.body;
+    const createPointService = new CreatePointService();
+    const point = request.body;
+    const { items } = point;
 
-    const trx = await knex.transaction();
-    const point = {
-      image,
-      name,
-      email,
-      whatsapp,
-      latitude,
-      longitude,
-      city,
-      uf,
-    };
-    const insertedIds = await trx('points').insert(point);
+    delete point.items;
 
-    const pointId = insertedIds[0];
-    const pointItems = items.map((itemId: number) => {
-      return {
-        item_id: itemId,
-        point_id: pointId,
-      };
-    });
+    const createdPoint = await createPointService.execute(point, items);
 
-    await trx('point_items').insert(pointItems);
-    await trx.commit();
-
-    return response.status(201).json({
-      id: pointId,
-      ...point,
-    });
+    return response.status(201).json(createdPoint);
   }
 }
 
