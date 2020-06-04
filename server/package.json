@@ -8,6 +8,7 @@
     "test": "jest --passWithNoTests --silent --noStackTrace",
     "test:staged": "yarn test --findRelatedTests",
     "test:cov": "yarn test --coverage",
+    "test:debug": "jest",
     "migrate:run": "knex --knexfile knexfile.ts migrate:latest",
     "seed:run": "knex --knexfile knexfile.ts seed:run"
   },

@@ -23,8 +23,6 @@ describe('Points', () => {
     };
     const response = await request(app).post('/v1/points').send(point);
 
-    delete point.items;
-
     expect(response.status).toBe(201);
     expect(response.body).toHaveProperty('id');
     expect(response.body).toMatchObject(point);
