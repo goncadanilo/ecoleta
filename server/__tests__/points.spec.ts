@@ -31,4 +31,12 @@ describe('Points', () => {
     expect(response.body).toHaveProperty('point');
     expect(response.body).toHaveProperty('items');
   });
+
+  it('should returns 400 if a point is not found with the provided id', async () => {
+    const response = await request(app).get('/v1/points/1');
+
+    expect(response.status).toBe(400);
+    expect(response.body).toHaveProperty('message');
+    expect(response.body.message).toBe('Point not found');
+  });
 });
