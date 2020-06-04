@@ -1,5 +1,7 @@
 import knex from '../database/connection';
 import CreatePointDto from '../dtos/CreatePointDto';
+import AppError from '../errors/AppError';
+import ListOnePointDto from '../dtos/ListOnePointDto';
 
 class PointsRepository {
   public async createPoint({
@@ -38,6 +40,21 @@ class PointsRepository {
     await trx.commit();
 
     return pointId;
+  }
+
+  public async getPointById(id: number): Promise<ListOnePointDto> {
+    const point = await knex('points').select('*').where('id', id).first();
+
+    if (!point) {
+      throw new AppError('Point not found');
+    }
+
+    const items = await knex('items')
+      .join('point_items', 'items.id', '=', 'point_items.id')
+      .where('point_items.point_id', id)
+      .select('items.title');
+
+    return { point, items };
   }
 }
 

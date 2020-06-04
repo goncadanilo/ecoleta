@@ -6,5 +6,6 @@ const routes = Router();
 const pointsController = new PointsController();
 
 routes.post('/', pointsController.create);
+routes.get('/:id', pointsController.show);
 
 export default routes;
