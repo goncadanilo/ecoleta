@@ -3,8 +3,24 @@ import { Request, Response } from 'express';
 import CreatePointService from '../services/CreatePointService';
 import PointsRepository from '../repositories/PonitsPepository';
 import FindPointByIdService from '../services/FindPointByIdService';
+import FindPointsByFilters from '../services/FindPointsByFiltersServices';
 
 class PointsController {
+  public async index(request: Request, response: Response): Promise<Response> {
+    const pointsRepository = new PointsRepository();
+    const findPointsByFiltersServices = new FindPointsByFilters(
+      pointsRepository,
+    );
+    const { city, uf, items } = request.query;
+    const points = findPointsByFiltersServices.execute(
+      String(city),
+      String(uf),
+      String(items),
+    );
+
+    return response.status(200).json(points);
+  }
+
   public async create(request: Request, response: Response): Promise<Response> {
     const pointsRepository = new PointsRepository();
     const createPointService = new CreatePointService(pointsRepository);

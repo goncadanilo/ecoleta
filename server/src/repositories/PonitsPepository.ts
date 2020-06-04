@@ -1,7 +1,14 @@
 import knex from '../database/connection';
-import CreatePointDto from '../dtos/CreatePointDto';
 import AppError from '../errors/AppError';
+import CreatePointDto from '../dtos/CreatePointDto';
 import ListOnePointDto from '../dtos/ListOnePointDto';
+import ListPointsByFilterDto from '../dtos/ListPointsByFilterDto';
+
+interface Filter {
+  city: string;
+  uf: string;
+  items: Array<number>;
+}
 
 class PointsRepository {
   public async createPoint({
@@ -55,6 +62,22 @@ class PointsRepository {
       .select('items.title');
 
     return { point, items };
+  }
+
+  public async getPointsByFilter(
+    city: string,
+    uf: string,
+    items: Array<number>,
+  ): Promise<ListPointsByFilterDto[]> {
+    const points = await knex('points')
+      .join('point_items', 'points.id', '=', 'point_items.point_id')
+      .whereIn('point_items.item_id', items)
+      .where('city', city)
+      .where('uf', uf)
+      .distinct()
+      .select('points.*');
+
+    return points;
   }
 }
 
