@@ -39,4 +39,14 @@ describe('Points', () => {
     expect(response.body).toHaveProperty('message');
     expect(response.body.message).toBe('Point not found');
   });
+
+  it('should be able to list points by filters(city/uf, items)', async () => {
+    await request(app).post('/v1/points').send(fakePoint);
+    const { city, uf } = fakePoint;
+    const response = await request(app)
+      .get('/v1/points')
+      .query({ city, uf, items: '1,2' });
+
+    expect(response.status).toBe(200);
+  });
 });
