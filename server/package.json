@@ -5,11 +5,13 @@
   "license": "MIT",
   "scripts": {
     "start:dev": "ts-node-dev --transpileOnly --ignore-watch node_modules src/server.ts",
+    "pretest": "cross-env NODE_ENV=test yarn migrate:run && cross-env NODE_ENV=test yarn seed:run",
     "test": "jest --passWithNoTests --silent --noStackTrace",
     "test:staged": "yarn test --findRelatedTests",
     "test:cov": "yarn test --coverage",
-    "test:debug": "jest",
+    "posttest": "cross-env NODE_ENV=test yarn migrate:rollback",
     "migrate:run": "knex --knexfile knexfile.ts migrate:latest",
+    "migrate:rollback": "knex --knexfile knexfile.ts migrate:rollback",
     "seed:run": "knex --knexfile knexfile.ts seed:run"
   },
   "dependencies": {
