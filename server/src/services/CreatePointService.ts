@@ -1,4 +1,4 @@
-import knex from '../database/connection';
+import PointsRepository from '../repositories/PonitsPepository';
 
 interface Point {
   id?: number;
@@ -10,23 +10,14 @@ interface Point {
   longitude: number;
   city: string;
   uf: string;
+  items: Array<number>;
 }
 
 class CreatePointService {
-  public async execute(point: Point, items: Array<number>): Promise<Point> {
-    const trx = await knex.transaction();
-    const insertedIds = await trx('points').insert(point);
+  constructor(private readonly pointsRepository: PointsRepository) {}
 
-    const pointId = insertedIds[0];
-    const pointItems = items.map((itemId: number) => {
-      return {
-        item_id: itemId,
-        point_id: pointId,
-      };
-    });
-
-    await trx('point_items').insert(pointItems);
-    await trx.commit();
+  public async execute(point: Point): Promise<Point> {
+    const pointId = await this.pointsRepository.createPoint(point);
 
     return { id: pointId, ...point };
   }
