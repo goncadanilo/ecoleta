@@ -1,16 +1,5 @@
 import knex from '../database/connection';
-
-interface Point {
-  image: string;
-  name: string;
-  email: string;
-  whatsapp: string;
-  latitude: number;
-  longitude: number;
-  city: string;
-  uf: string;
-  items: Array<number>;
-}
+import CreatePointDto from '../dtos/CreatePointDto';
 
 class PointsRepository {
   public async createPoint({
@@ -23,7 +12,7 @@ class PointsRepository {
     city,
     uf,
     items,
-  }: Point): Promise<number> {
+  }: CreatePointDto): Promise<number> {
     const trx = await knex.transaction();
 
     const insertedIds = await trx('points').insert({

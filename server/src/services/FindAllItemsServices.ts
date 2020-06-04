@@ -1,15 +1,10 @@
 import ItemsRepository from '../repositories/ItemsRepository';
-
-interface Items {
-  id: number;
-  title: string;
-  image: string;
-}
+import ListAllItemsDto from '../dtos/ListAllItemsDto';
 
 class FindAllItemsServices {
   constructor(private readonly itemsRepository: ItemsRepository) {}
 
-  public async execute(): Promise<Items[]> {
+  public async execute(): Promise<ListAllItemsDto[]> {
     const items = await this.itemsRepository.getAllItems();
     const serealizedItems = items.map(item => {
       return {

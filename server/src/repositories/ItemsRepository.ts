@@ -1,13 +1,8 @@
 import knex from '../database/connection';
-
-interface Items {
-  id: number;
-  title: string;
-  image: string;
-}
+import ListAllItemsDto from '../dtos/ListAllItemsDto';
 
 class ItemsRepository {
-  public async getAllItems(): Promise<Items[]> {
+  public async getAllItems(): Promise<ListAllItemsDto[]> {
     const items = await knex('items').select('*');
     return items;
   }
