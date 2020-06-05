@@ -3,8 +3,7 @@ module.exports = {
   collectCoverageFrom: [
     '<rootDir>/src/**/*.ts',
     '!<rootDir>/src/server.ts',
-    '!<rootDir>/src/database/migrations/*',
-    '!<rootDir>/src/database/seeds/*',
+    '!<rootDir>/src/database/**/*',
   ],
   coverageDirectory: 'coverage',
   coverageReporters: ['text-summary', 'lcov'],
