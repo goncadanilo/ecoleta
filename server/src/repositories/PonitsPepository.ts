@@ -6,7 +6,7 @@ import ListPointsByFilterDto from '../dtos/ListPointsByFilterDto';
 
 class PointsRepository {
   public async createPoint({
-    image,
+    image = 'fake-image',
     name,
     email,
     whatsapp,
