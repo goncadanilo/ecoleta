@@ -4,12 +4,6 @@ import CreatePointDto from '../dtos/CreatePointDto';
 import ListOnePointDto from '../dtos/ListOnePointDto';
 import ListPointsByFilterDto from '../dtos/ListPointsByFilterDto';
 
-interface Filter {
-  city: string;
-  uf: string;
-  items: Array<number>;
-}
-
 class PointsRepository {
   public async createPoint({
     image,
@@ -67,7 +61,7 @@ class PointsRepository {
   public async getPointsByFilter(
     city: string,
     uf: string,
-    items: Array<number>,
+    items: number[],
   ): Promise<ListPointsByFilterDto[]> {
     const points = await knex('points')
       .join('point_items', 'points.id', '=', 'point_items.point_id')

@@ -7,5 +7,5 @@ export default interface CreatePointDto {
   longitude: number;
   city: string;
   uf: string;
-  items: Array<number>;
+  items: number[];
 }
