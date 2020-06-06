@@ -1,0 +1,8 @@
+{
+  ".ts": [
+    "eslint 'src/**/*.ts --fix'"
+  ],
+  "*.tsx": [
+    "eslint 'src/**/*.tsx --fix'"
+  ]
+}
