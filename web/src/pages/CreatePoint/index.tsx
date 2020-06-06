@@ -1,12 +1,26 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FiArrowLeft } from 'react-icons/fi';
 import { Map, TileLayer, Marker } from 'react-leaflet';
 
+import api from '../../services/api';
+
 import './styles.css';
 import logo from '../../assets/logo.svg';
 
+interface Items {
+  id: number;
+  title: string;
+  image: string;
+}
+
 const CreatePoint: React.FC = () => {
+  const [items, setItems] = useState<Items[]>([]);
+
+  useEffect(() => {
+    api.get('items').then(response => setItems(response.data));
+  }, []);
+
   return (
     <div id="page-create-point">
       <header>
@@ -95,10 +109,12 @@ const CreatePoint: React.FC = () => {
           </legend>
 
           <ul className="items-grid">
-            <li>
-              <img src="" alt=""/>
-              <span>Nome do ítem</span>
-            </li>
+            {items.map(item => (
+              <li key={item.id}>
+                <img src={item.image} alt={item.title} />
+                <span>{item.title}</span>
+              </li>
+            ))}
           </ul>
         </fieldset>
 
