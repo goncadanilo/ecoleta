@@ -25,22 +25,28 @@ interface IBGECityResponse {
 }
 
 const CreatePoint: React.FC = () => {
-  const [items, setItems] = useState<Items[]>([]);
+  const [listItems, setListItems] = useState<Items[]>([]);
   const [ufs, setUfs] = useState<string[]>([]);
   const [cities, setCities] = useState<string[]>([]);
 
-  const [initialPosition, setInitialPosition] = useState<[number, number]>([0, 0]);
+  const [initialPosition, setInitialPosition] = useState<[number, number]>([
+    0,
+    0,
+  ]);
 
   const [selectedUf, setSelectedUf] = useState('0');
   const [selectedCity, setSelectedCity] = useState('0');
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
-  const [selectedPosition, setSelectedPosition] = useState<[number, number]>([0, 0]);
+  const [selectedPosition, setSelectedPosition] = useState<[number, number]>([
+    0,
+    0,
+  ]);
 
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    whatsapp: ''
-  })
+    whatsapp: '',
+  });
 
   const history = useHistory();
 
@@ -53,7 +59,7 @@ const CreatePoint: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    api.get('items').then(response => setItems(response.data));
+    api.get('items').then(response => setListItems(response.data));
   }, []);
 
   useEffect(() => {
@@ -61,11 +67,11 @@ const CreatePoint: React.FC = () => {
       const ufInitials = response.data.map(uf => uf.sigla);
 
       setUfs(ufInitials);
-    })
+    });
   }, []);
 
   useEffect(() => {
-    if(selectedUf === '0') return;
+    if (selectedUf === '0') return;
 
     ibge
       .get<IBGECityResponse[]>(`estados/${selectedUf}/municipios`)
@@ -73,7 +79,7 @@ const CreatePoint: React.FC = () => {
         const cityNames = response.data.map(city => city.nome);
 
         setCities(cityNames);
-      })
+      });
   }, [selectedUf]);
 
   function handleSelectUf(event: ChangeEvent<HTMLSelectElement>) {
@@ -96,19 +102,16 @@ const CreatePoint: React.FC = () => {
 
       setSelectedItems(filteredItems);
     } else {
-      setSelectedItems([ ...selectedItems, id ]);
+      setSelectedItems([...selectedItems, id]);
     }
   }
 
   function handleMapClick(event: LeafletMouseEvent) {
-    setSelectedPosition([
-      event.latlng.lat,
-      event.latlng.lng
-    ])
+    setSelectedPosition([event.latlng.lat, event.latlng.lng]);
   }
 
   function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
-    const { name,  value } = event.target;
+    const { name, value } = event.target;
 
     setFormData({ ...formData, [name]: value });
   }
@@ -130,11 +133,12 @@ const CreatePoint: React.FC = () => {
       city,
       longitude,
       latitude,
-      items
+      items,
     };
 
     await api.post('points', data);
 
+    // eslint-disable-next-line no-alert
     alert('Ponto cadastrado com sucesso!');
 
     history.push('/');
@@ -143,7 +147,7 @@ const CreatePoint: React.FC = () => {
   return (
     <div id="page-create-point">
       <header>
-        <img src={logo} alt="Ecoleta"/>
+        <img src={logo} alt="Ecoleta" />
 
         <Link to="/">
           <FiArrowLeft />
@@ -152,7 +156,7 @@ const CreatePoint: React.FC = () => {
       </header>
 
       <form onSubmit={handleSubmit}>
-        <h1>Cadastro do <br/> ponto de coleta</h1>
+        <h1>Cadastro do ponto de coleta</h1>
 
         <fieldset>
           <legend>
@@ -204,7 +208,7 @@ const CreatePoint: React.FC = () => {
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
 
-            <Marker position={selectedPosition}/>
+            <Marker position={selectedPosition} />
           </Map>
 
           <div className="field-group">
@@ -218,7 +222,9 @@ const CreatePoint: React.FC = () => {
               >
                 <option value="0">Selecione uma UF</option>
                 {ufs.map(uf => (
-                  <option key={uf} value={uf}>{uf}</option>
+                  <option key={uf} value={uf}>
+                    {uf}
+                  </option>
                 ))}
               </select>
             </div>
@@ -233,7 +239,9 @@ const CreatePoint: React.FC = () => {
               >
                 <option value="0">Selecione uma cidade</option>
                 {cities.map(city => (
-                  <option key={city} value={city}>{city}</option>
+                  <option key={city} value={city}>
+                    {city}
+                  </option>
                 ))}
               </select>
             </div>
@@ -247,7 +255,7 @@ const CreatePoint: React.FC = () => {
           </legend>
 
           <ul className="items-grid">
-            {items.map(item => (
+            {listItems.map(item => (
               <li
                 key={item.id}
                 onClick={() => handleSelectItem(item.id)}
@@ -264,6 +272,6 @@ const CreatePoint: React.FC = () => {
       </form>
     </div>
   );
-}
+};
 
 export default CreatePoint;
