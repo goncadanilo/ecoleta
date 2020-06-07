@@ -1,37 +1,79 @@
 import React, { useState, useEffect } from 'react';
 import { Feather as Icon } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import { View, TouchableOpacity, Text, ScrollView, Image } from 'react-native';
+import { View, TouchableOpacity, Text, ScrollView, Image, Alert } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import { SvgUri } from 'react-native-svg';
+import * as Location from 'expo-location';
 
 import styles from './styles';
 import api from '../../services/api';
 
-interface Items {
+interface Item {
   id: number;
   title: string;
   image: string;
 }
 
+interface Point {
+  id: number;
+  name: string;
+  image: string;
+  latitude: number;
+  longitude: number;
+}
+
 const Points: React.FC = () => {
-  const [items, setItems] = useState<Items[]>([]);
+  const [items, setItems] = useState<Item[]>([]);
+  const [points, setPoints] = useState<Point[]>([]);
   const [selectedItems, setSelectedItem] = useState<number[]>([]);
 
+  const [initialPosition, setInitialPosition] = useState<[number, number]>([0, 0]);
+
   const navigation = useNavigation();
+
+  useEffect(() => {
+    async function loadPosition() {
+      const { status } = await Location.requestPermissionsAsync();
+
+      if(status !== 'granted') {
+        Alert.alert('Ooops...', 'Precisamos da sua permissão para obter a localização');
+        return;
+      }
+
+      const location = await Location.getCurrentPositionAsync();
+      const { latitude, longitude } = location.coords;
+
+      setInitialPosition([latitude, longitude]);
+    }
+
+    loadPosition();
+  }, []);
 
   useEffect(() => {
     api.get('items').then(response => {
       setItems(response.data);
     });
-  });
+  }, []);
+
+  useEffect(() => {
+    api.get('points', {
+      params: {
+        city: 'Campos Belos',
+        uf: 'GO',
+        items: [1, 2]
+      }
+    }).then(response => {
+      setPoints(response.data);
+    });
+  }, []);
 
   function handleNavigateBack() {
     navigation.goBack();
   }
 
-  function handleNavigateToDatail() {
-    navigation.navigate('Datail')
+  function handleNavigateToDatail(id: number) {
+    navigation.navigate('Datail', { id });
   }
 
   function handleSelecteItem(id: number) {
@@ -59,29 +101,34 @@ const Points: React.FC = () => {
         </Text>
 
         <View style={styles.mapContainer}>
-          <MapView
-            style={styles.map}
-            initialRegion={{
-              latitude: -13.0381525,
-              longitude: -46.7714961,
-              latitudeDelta: 0.014,
-              longitudeDelta: 0.014
-            }}
-          >
-            <Marker
-              style={styles.mapMarker}
-              onPress={handleNavigateToDatail}
-              coordinate={{
-                latitude: -13.0381525,
-                longitude: -46.7714961,
+          {initialPosition[0] !== 0 && (
+            <MapView
+              style={styles.map}
+              initialRegion={{
+                latitude: initialPosition[0],
+                longitude: initialPosition[1],
+                latitudeDelta: 0.014,
+                longitudeDelta: 0.014
               }}
             >
-              <View style={styles.mapMarkerContainer}>
-                <Image style={styles.mapMarkerImage} source={{ uri: '' }} />
-                <Text style={styles.mapMarkerTitle}>Mercado</Text>
-              </View>
-            </Marker>
-          </MapView>
+              {points.map(point => (
+                <Marker
+                  key={point.id}
+                  style={styles.mapMarker}
+                  onPress={() => handleNavigateToDatail(point.id)}
+                  coordinate={{
+                    latitude: point.latitude,
+                    longitude: point.longitude,
+                  }}
+                >
+                  <View style={styles.mapMarkerContainer}>
+                    <Image style={styles.mapMarkerImage} source={{ uri: point.image }} />
+                    <Text style={styles.mapMarkerTitle}>{point.name}</Text>
+                  </View>
+                </Marker>
+              ))}
+            </MapView>
+          )}
         </View>
       </View>
 
