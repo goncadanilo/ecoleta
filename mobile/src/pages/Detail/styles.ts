@@ -4,7 +4,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 32,
-    paddingTop: 20,
   },
 
   pointImage: {
@@ -50,6 +49,7 @@ const styles = StyleSheet.create({
   footer: {
     borderTopWidth: StyleSheet.hairlineWidth,
     borderColor: '#999',
+    paddingBottom: 0,
     paddingVertical: 20,
     paddingHorizontal: 32,
     flexDirection: 'row',
