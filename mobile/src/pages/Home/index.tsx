@@ -30,9 +30,7 @@ const Home: React.FC = () => {
       <View style={styles.footer}>
         <RectButton style={styles.button} onPress={handleNavigateToPoints}>
           <View style={styles.buttonIcon}>
-            <Text>
-              <Icon name="arrow-right" color="#FFF" size={24} />
-            </Text>
+            <Icon name="arrow-right" color="#FFF" size={24} />
           </View>
           <Text style={styles.buttonText}>Entrar</Text>
         </RectButton>
