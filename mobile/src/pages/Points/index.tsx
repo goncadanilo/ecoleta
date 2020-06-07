@@ -72,14 +72,14 @@ const Points: React.FC = () => {
     navigation.goBack();
   }
 
-  function handleNavigateToDatail(id: number) {
-    navigation.navigate('Datail', { id });
+  function handleNavigateToDatail(pointId: number) {
+    navigation.navigate('Datail', { pointId });
   }
 
   function handleSelecteItem(id: number) {
     const alreadySelected = selectedItems.findIndex(item => item === id);
 
-    if(alreadySelected >= 0) {
+    if(alreadySelected > = 0) {
       const filteredItems = selectedItems.filter(item => item !== id);
 
       setSelectedItem(filteredItems);
