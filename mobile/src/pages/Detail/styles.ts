@@ -49,7 +49,6 @@ const styles = StyleSheet.create({
   footer: {
     borderTopWidth: StyleSheet.hairlineWidth,
     borderColor: '#999',
-    paddingBottom: 0,
     paddingVertical: 20,
     paddingHorizontal: 32,
     flexDirection: 'row',
