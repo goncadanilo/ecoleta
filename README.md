@@ -1,5 +1,5 @@
 <h1 align="center">
-  :recycle: Ecoleta
+   <img alt="Ecoleta" title="Ecoleta" src=".github/logo.svg" width="220px" />
 </h1>
 
 <br>
