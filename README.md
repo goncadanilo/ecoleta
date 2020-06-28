@@ -8,6 +8,8 @@
   <a href="https://github.com/goncadanilo/ecoleta/commits/master">
     <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/goncadanilo/ecoleta.svg">
   </a>
+  
+  <img alt="Coverage" src="https://img.shields.io/badge/coverage-100%25-brightgreen">
 
   <a href="https://github.com/goncadanilo/ecoleta/issues">
     <img alt="Repository issues" src="https://img.shields.io/github/issues/goncadanilo/ecoleta.svg">
